@@ -1,0 +1,47 @@
+#!/usr/bin/env python
+
+import getopt, sys
+
+def usage():
+    print "\nABV Calculator"
+    print "Usage: abv-calc options\n"
+    print "abv-calc --og=<original gravity> --fg=<final gravity>"
+    print " "
+    print "--help           Usage"
+    print "--og             Gravity ready before fermentation"
+    print "--fg             Gravity reading after fermentation"
+    print " "
+    sys.exit()
+
+def calcABV(og,tg):
+    ABV = ((1.05*(float(og) - float(tg)))/float(tg))/0.79
+    percentage = 100 * ABV
+    print "\n"	
+    print "Alcohol percentage is: " + str(round(percentage,2)) + "%"
+    print "\n"
+
+def args(args):
+    if len(sys.argv) < 3:
+        usage()
+    try:
+        options, remainder = getopt.getopt(args, "o:f:", ['og=','fg='])
+    
+    except getopt.GetoptError:
+        usage()
+        sys.exit()
+
+    for opt, arg in options:
+        if opt == '--help':
+            usage()
+        elif opt in ('-o', '--og'):
+            og = arg
+        elif opt in ('-f', '--fg'):
+            fg = arg
+    calcABV(og,fg)
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        args(sys.argv[1:])
+    else:
+        usage()
+	
